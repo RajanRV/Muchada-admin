@@ -29,13 +29,15 @@ class Index extends React.Component {
       this.props.getSellers(this.props.login.token);
     // if (this.props.users.count <= 0)  
       this.props.getUsers(this.props.login.token);
+      this.props.getItemCategoryCount(this.props.login.token);
+      this.props.getItemCount(this.props.login.token);
   }
 
   render() {
     return (
       <>
         { this.props.login.token ? '' : <Redirect to="/auth/login" /> }
-        <Header sellers={ this.props.sellers } users={this.props.users}/>
+        <Header sellers={ this.props.sellers } users={this.props.users} itemCategory={this.props.itemCategory} item={this.props.item}/>
         {/* Page content */}
         <Container className="mt--7" fluid>
           <Row className="mt-5">
@@ -234,13 +236,17 @@ class Index extends React.Component {
 
 const mapStateToProps = (state) => ({
   login: state.login,
-  sellers: {count: state.dashboard.sellers.count, loading: state.dashboard.sellers.loading},
-  users: {count: state.dashboard.users.count, loading: state.dashboard.users.loading}
+  sellers: state.dashboard.sellers,
+  users: state.dashboard.users,
+  itemCategory: state.dashboard.itemCategory,
+  item: state.dashboard.item
 })
 
 const mapDispatchToProps = {
   getSellers : actions.getSellersCount,
-  getUsers : actions.getUsersCount
+  getUsers : actions.getUsersCount,
+  getItemCategoryCount : actions.getItemCategoryCount,
+  getItemCount : actions.getItemCount
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Index);
