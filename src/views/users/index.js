@@ -13,9 +13,9 @@ import {
 } from "reactstrap";
 import FA from 'react-fontawesome';
 import Header from "components/Headers/PageHeader.js";
-import * as dashboardActions from '../index/actions';
+import * as actions from './actions';
 
-class Sellers extends React.Component {
+class Users extends React.Component {
   constructor(props){
     super(props); 
     this.state = {
@@ -79,9 +79,9 @@ class Sellers extends React.Component {
                                 /> 
                             </td>
                         </tr>
-                    : this.props.users.count > 0 ? 
+                    : this.props.users.list.length > 0 ? 
                     this.props.users.list.map(user => (
-                        <tr>
+                        <tr key={user.id}>
                             <th scope="row">{user.username}</th>
                             <td>{user.email}</td>
                             <td>{user.confirmed? 'Yes' : 'No'}</td>
@@ -109,13 +109,11 @@ class Sellers extends React.Component {
 
 const mapStateToProps = (state) => ({
   login: state.login,
-  // sellers: state.dashboard.sellers,
-  users: state.dashboard.users
+  users: state.users
 })
 
 const mapDispatchToProps = {
-  // getSellers : dashboardActions.getSellers,
-  getUsers : dashboardActions.getUsers
+  getUsers : actions.getUsers
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Sellers);
+export default connect(mapStateToProps, mapDispatchToProps)(Users);

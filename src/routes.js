@@ -5,7 +5,7 @@ import Register from "./views/register";
 import Login from "./views/login";
 import Logout from './views/login/logout';
 import Sellers from './views/sellers';
-// import Users from './views/users';
+import Users from './views/users';
 // import Tables from "./views/examples/tables";
 // import Icons from "./views/examples/icons";
 
@@ -28,15 +28,15 @@ var routes = [
     sidebar: true,
     protected: true
   },
-  // {
-  //   path: "/users",
-  //   name: "Users",
-  //   icon: "ni ni-tv-2 text-primary",
-  //   component: Users,
-  //   layout: "/admin",
-  //   sidebar: true,
-  //   protected: true
-  // },
+  {
+    path: "/users",
+    name: "Users",
+    icon: "ni ni-tv-2 text-primary",
+    component: Users,
+    layout: "/admin",
+    sidebar: true,
+    protected: true
+  },
   // {
   //   path: "/icons",
   //   name: "Icons",
