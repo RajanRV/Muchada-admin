@@ -70,13 +70,15 @@ class Users extends React.Component {
                     {this.props.users.loading ? 
                         <tr>
                             <td colSpan="4" className="text-cetner">
-                                <FA
+                                <center>
+                                  <FA
                                     className="super-crazy-colors"
                                     name="circle-notch"
                                     size="2x"
                                     spin
                                     // style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
-                                /> 
+                                  /> 
+                                </center>
                             </td>
                         </tr>
                     : this.props.users.list.length > 0 ? 
