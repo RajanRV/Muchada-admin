@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from 'react-redux';
-
+import { Redirect } from 'react-router-dom';
 import {
   Button,
   Card,
@@ -13,21 +13,29 @@ import {
 } from "reactstrap";
 
 import Header from "components/Headers/Header.js";
+import * as actions from './actions';
 
 class Index extends React.Component {
   constructor(props){
-    super(props);    
+    super(props); 
     this.state = {
       activeNav: 1,
       chartExample1Data: "data1",
-      redirect : false
     };
   }
-  
+
+  componentDidMount(){
+    // if (this.props.sellers.count <= 0)
+      this.props.getSellers(this.props.login.token);
+    // if (this.props.users.count <= 0)  
+      this.props.getUsers(this.props.login.token);
+  }
+
   render() {
     return (
       <>
-        <Header />
+        { this.props.login.token ? '' : <Redirect to="/auth/login" /> }
+        <Header sellers={ this.props.sellers } users={this.props.users}/>
         {/* Page content */}
         <Container className="mt--7" fluid>
           <Row className="mt-5">
@@ -225,7 +233,14 @@ class Index extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  login: state.login
+  login: state.login,
+  sellers: {count: state.dashboard.sellers.count, loading: state.dashboard.sellers.loading},
+  users: {count: state.dashboard.users.count, loading: state.dashboard.users.loading}
 })
 
-export default connect(mapStateToProps, {})(Index);
+const mapDispatchToProps = {
+  getSellers : actions.getSellersCount,
+  getUsers : actions.getUsersCount
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Index);

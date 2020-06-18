@@ -2,7 +2,7 @@ import * as actionTypes from './actionTypes';
 import * as URLs from '../../configs/urls';
 import axios from 'axios';
 import auth from '../../core/auth';
-import { toast } from 'react-toastify';
+import toast from '../../core/toast';
 
 export const loginUser = (identifier, password) => (dispatch) => {
 	dispatch({ type: actionTypes.CALL_LOGIN_USER });
@@ -12,7 +12,7 @@ export const loginUser = (identifier, password) => (dispatch) => {
 	})
     .then((response) => {
 		const { user, jwt } = response.data;
-		if(!user || !jwt || user.blocked || !user.confirmed){
+		if(!user || !jwt || user.blocked || !user.confirmed || user.role ? user.role.id !== 3 : false){
 			return auth.logout(() => {
 				let error = 'Some technical error occured';
 				if(user.blocked){
@@ -21,6 +21,20 @@ export const loginUser = (identifier, password) => (dispatch) => {
 				if(!user.confirmed){
 					error = "Please verify your account to login."
 				}
+
+				if(user.role.id !== 3){
+					error = "You are not authorized to access."
+				}
+
+				toast.error(error, {
+					position: "top-center",
+					autoClose: 5000,
+					hideProgressBar: true,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+					});
 				return dispatch({ 
 					type: actionTypes.LOGIN_USER_FAILED, 
 					payload: error  
@@ -33,15 +47,7 @@ export const loginUser = (identifier, password) => (dispatch) => {
     })
     .catch(function(error) {
 		console.error(error);
-		toast.error(error.response.data.message[0].messages[0].message, {
-			position: "top-center",
-			autoClose: 5000,
-			hideProgressBar: true,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			progress: undefined,
-			});
+		toast(error.response.data.message[0].messages[0].message, 'error');
 		return auth.logout(() => {
 			return dispatch({ type: actionTypes.LOGIN_USER_FAILED, payload: error.response.data.message.pop().messages.pop().message })
 		});

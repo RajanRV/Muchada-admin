@@ -1,4 +1,4 @@
-
+import { encrypt } from './encryption';
 
 class Auth {
     constructor(){
@@ -7,8 +7,9 @@ class Auth {
     login(response, cb){
         this.isLoggedIn = true;
         localStorage.setItem('isLoggedIn', true);
-        localStorage.setItem('token', response.jwt);
-        localStorage.setItem('user', JSON.stringify(response.user));
+        console.log(encrypt(response.jwt));
+        localStorage.setItem('token', encrypt(response.jwt));
+        localStorage.setItem('user', encrypt(JSON.stringify(response.user)));
         return cb();
     }
     logout(cb){

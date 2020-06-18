@@ -1,6 +1,6 @@
 import { compose,createStore,applyMiddleware } from 'redux';
 import thunk from "redux-thunk";
-
+import { decrypt } from './core/encryption';
 import reducers from './configs/reducer';
 
 const middlewares = [thunk];
@@ -11,8 +11,8 @@ if(localStorage.getItem('isLoggedIn') !== 'false'){
     initialState = {
         login: {
             loading: false,
-            currentUser: JSON.parse(localStorage.getItem('user')),
-            token: localStorage.getItem('token'),
+            currentUser: JSON.parse(decrypt(localStorage.getItem('user'))),
+            token: decrypt(localStorage.getItem('token')),
             error: ''
         }
     }
